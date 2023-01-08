@@ -1,4 +1,4 @@
-# SoftClu: Data Augmentation-free Unsupervised Learning for 3D Point Cloud Understanding (BMVC 2022 Oral)
+## SoftClu: Data Augmentation-free Unsupervised Learning for 3D Point Cloud Understanding (BMVC 2022 Oral)
 
 Unsupervised learning on 3D point clouds has undergone a rapid evolution, especially thanks to data augmentation-based contrastive methods. However, data augmentation is not ideal as it requires a careful selection of the type of augmentations to perform, which in turn can affect the geometric and semantic information learned by the network during self-training. 
 To overcome this issue, we propose an augmentation-free unsupervised approach for point clouds to learn transferable point-level features via soft clustering, named SoftClu. 
@@ -13,6 +13,19 @@ Experiments on downstream applications, such as 3D object classification, part s
 </div>
 
 # This is a draft version.
+
+## Usage
+
+### Requirements
+- PyTorch >= 1.7.0
+- python >= 3.7
+- CUDA >= 10.1.243
+- GCC >= 7.4.0
+- torchvision
+
+### Dataset
+For **ShapeNetPart**, **S3DIS**, and **ModelNet40** datasets, we use **ShapeNet** for the pre-training, and then finetune on these datasets respectively.
+
 ## Citation
 If you find this code useful for your work or use it in your project, please consider citing:
 ```bibtex
