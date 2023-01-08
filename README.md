@@ -8,6 +8,9 @@ Under the constraint that these pseudo-labels induce the equipartition of the po
 We formulate an unsupervised loss to minimize the standard cross-entropy between pseudo-labels and predicted labels. 
 Experiments on downstream applications, such as 3D object classification, part segmentation, and semantic segmentation, show the effectiveness of our framework in outperforming state-of-the-art techniques.
 
+<div align="center">
+  <img src="figures/main_frame.png" width="">
+</div>
 
 # This is a draft version.
 ## Citation
