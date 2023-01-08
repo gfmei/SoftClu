@@ -29,7 +29,7 @@ def ot_assign(x, y, epsilon=1e-3, thresh=1e-3, max_iter=30, dst='fe'):
     return gamma, loss
 
 
-def dis_assign(x, y, tau=0.01, dst='fe'):
+def dis_assign(x, y, tau=0.01, dst='eu'):
     """
     :param x:
     :param y: cluster center
