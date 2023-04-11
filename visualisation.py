@@ -15,6 +15,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 
+from data.modelnet import ModelNet40
 from data.shapenet_part import ShapeNetPart
 
 try:
@@ -49,10 +50,10 @@ def parse_args():
                         help='Size of batch)')
     parser.add_argument('--test_batch_size', type=int, default=16, metavar='batch_size',
                         help='Size of batch)')
-    parser.add_argument('--num_points', type=int, default=2048,
+    parser.add_argument('--num_points', type=int, default=1024,
                         help='num of points to use')
     # model
-    parser.add_argument('--model', type=str, default='dgcnn_seg', metavar='N', choices=['dgcnn_seg'],
+    parser.add_argument('--model', type=str, default='dgcnn', metavar='N', choices=['pointnet, dgcnn,dgcnn_seg'],
                         help='Model to use, [pointnet, dgcnn]')
     parser.add_argument('--ablation', type=str, default='all',
                         help='[xyz, all, fea]')
@@ -78,7 +79,7 @@ def parse_args():
                         help='evaluate the model')
     parser.add_argument('--dropout', type=float, default=0.5,
                         help='dropout rate')
-    parser.add_argument('--exp_name', type=str, default='dgcnn_seg_64', metavar='N',
+    parser.add_argument('--exp_name', type=str, default='dgcnn_part_seg', metavar='N',
                         help='Name of the experiment')
     parser.add_argument('--epochs', type=int, default=250, metavar='N',
                         help='number of episode to train')
@@ -115,7 +116,7 @@ def data_depict(args):
 
     model1 = DGCNNPartSeg(args.emb_dims, args.num_clus, args.dropout, seg_num_all, pretrain=False).cuda()
     model1 = nn.DataParallel(model1)
-    model1.load_state_dict(torch.load(f'checkpoints/dgcnn_rand/models/model.t7'))
+    model1.load_state_dict(torch.load(f'checkpoints/dgcnn_part_seg/models/model.t7'))
     with torch.no_grad():
         model.eval()
         model1.eval()
@@ -155,8 +156,7 @@ def data_depict(args):
                 point[:, :3] = pc_normalize(point[:, :3])
                 make_point_cloud(point, f'figures/gt{ids}.ply', color=gt_color)
                 make_point_cloud(point, f'figures/cross{ids}.ply', color=pred_color)
-                make_point_cloud(point, f'figures/soft{ids}.ply', color=pred_color1)
-
+                # make_point_cloud(point, f'figures/soft{ids}.ply', color=pred_color1)
 
 
 def visual_tsne(args, data):
@@ -184,7 +184,7 @@ def visual_tsne(args, data):
     plot_with_labels(low_dim_embs, labels)
 
 
-def plot_with_labels(low_d_weights, labels, dsname='ModelNet10'):
+def plot_with_labels(low_d_weights, labels, num_classes=40, dsname='ModelNet40'):
     if dsname == 'ModelNet10':
         classnames = [
             'bathtub',
@@ -202,9 +202,8 @@ def plot_with_labels(low_d_weights, labels, dsname='ModelNet10'):
         classnames = []
     plt.cla()  # clear当前活动的坐标轴
     # fig = plt.figure(figsize=(8, 8))
-    num_classes = 10
     X, Y = low_d_weights[:, 0], low_d_weights[:, 1]
-    cmap = plt.cm.get_cmap("tab10", num_classes)
+    cmap = plt.cm.get_cmap("tab20", num_classes)
     # 把Tensor的第1列和第2列,也就是TSNE之后的前两个特征提取出来,作为X,Y
     fig = plt.scatter(X, Y, c=labels + 1, cmap=cmap, s=20)
     cbar = plt.colorbar(fig)
@@ -212,7 +211,7 @@ def plot_with_labels(low_d_weights, labels, dsname='ModelNet10'):
     cbar.set_ticklabels(classnames)
     cbar.ax.tick_params(labelsize=15)
     plt.clim(0.5, num_classes + 0.5)
-    plt.title('Ours')
+    # plt.title('Ours')
     plt.axis('off')
     plt.savefig('/home/gmei/Data/data/pscnn.pdf')
     plt.show()
@@ -220,6 +219,6 @@ def plot_with_labels(low_d_weights, labels, dsname='ModelNet10'):
 
 if __name__ == '__main__':
     args = parse_args()
-    # test_loader = DataLoader(ModelNet40(args.root, args.num_points, False, False, True, True, True, True))
+    test_loader = DataLoader(ModelNet40(args.root, args.num_points, False, False, True, True, True, False))
     # visual_tsne(args, test_loader)
     data_depict(args)

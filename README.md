@@ -26,6 +26,11 @@ Experiments on downstream applications, such as 3D object classification, part s
 ### Dataset
 For **ShapeNetPart**, **S3DIS**, and **ModelNet40** datasets, we use **ShapeNet** for the pre-training, and then finetune on these datasets respectively.
 
+###  Classification Training
+```
+python main.py --model dgcnn --epochs 250 --lr 0.001 --exp_name <exp name> --num_clus 64 --batch_size 32 --print_freq 200 --k 20 --dataset <dataset name>
+```
+
 ## Citation
 If you find this code useful for your work or use it in your project, please consider citing:
 ```bibtex

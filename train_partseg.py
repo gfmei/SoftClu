@@ -279,7 +279,7 @@ if __name__ == "__main__":
     # Training settings
     parser = argparse.ArgumentParser(description='Point Cloud Part Segmentation')
     parser.add_argument('--root', type=str, default='/home/gmei/Data/data', help="dataset path")
-    parser.add_argument('--exp_name', type=str, default='dgcnn_rand', metavar='N',
+    parser.add_argument('--exp_name', type=str, default='dgcnn_part_seg', metavar='N',
                         help='Name of the experiment')
     parser.add_argument('--restore', action='store_true', default=False,
                         help='restore the weights [default: True]')
@@ -294,9 +294,9 @@ if __name__ == "__main__":
                         choices=['airplane', 'bag', 'cap', 'car', 'chair',
                                  'earphone', 'guitar', 'knife', 'lamp', 'laptop',
                                  'motor', 'mug', 'pistol', 'rocket', 'skateboard', 'table'])
-    parser.add_argument('--batch_size', type=int, default=32, metavar='batch_size',
+    parser.add_argument('--batch_size', type=int, default=16, metavar='batch_size',
                         help='Size of batch)')
-    parser.add_argument('--test_batch_size', type=int, default=16, metavar='batch_size',
+    parser.add_argument('--test_batch_size', type=int, default=8, metavar='batch_size',
                         help='Size of batch)')
     parser.add_argument('--epochs', type=int, default=200, metavar='N',
                         help='number of episode to train ')
@@ -323,9 +323,9 @@ if __name__ == "__main__":
                         help='Dimension of embeddings')
     parser.add_argument('--k', type=int, default=40, metavar='N',
                         help='Num of nearest neighbors to use')
-    parser.add_argument('--model_path', type=str, default='', metavar='N',
+    parser.add_argument('--model_path', type=str, default='model.t7', metavar='N',
                         help='Pretrained model path')
-    parser.add_argument('--pretrained_path', type=str, default='best_model.pth', metavar='N',
+    parser.add_argument('--pretrained_path', type=str, default='model.t7', metavar='N',
                         help='Pretrained model path')
     parser.add_argument('--visu', type=str, default='',
                         help='visualize the model')
